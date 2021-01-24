@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- Alias 설정 -->
+	<typeAliases>
+		<typeAlias alias="clientInfo" type="com.ting.domain.ClientInfoVO" />
+		<typeAlias alias="clientDetailInfo" type="com.ting.domain.ClientDetailInfoVO" />
+		<typeAlias alias="idealType" type="com.ting.domain.IdealTypeVO" />	
+		<typeAlias alias="board" type="com.ting.domain.TingBoardVO"/>
+		<typeAlias alias="likeReceive" type="com.ting.domain.LikeReceiveVO"/>
+		<typeAlias alias="coupleDecision" type="com.ting.domain.CoupleDecisionVO"/>
+		<typeAlias alias="pvo" type="com.ting.domain.PageVO"/>
+		<typeAlias alias="goods" type="com.ting.domain.GoodsVO" />
+		<typeAlias alias="payment" type="com.ting.domain.PaymentVO" />
+		<typeAlias alias="Qna" type="com.ting.domain.BoardQnaVO"/>
+		<typeAlias alias="rvo" type="com.ting.domain.ReplyVO"/>
+		<typeAlias alias="mbtiExplanation" type="com.ting.domain.MbtiExplanationVO"/>
+		<typeAlias alias="idealRecommendation" type="com.ting.domain.IdealRecommendationVO"/>
+		
+		<typeAlias alias="interest" type="com.ting.domain.InterestVO"/>
+		<typeAlias alias="clientInterest" type="com.ting.domain.ClientInterestVO"/>
+		<typeAlias alias="charmingPoint" type="com.ting.domain.CharmingPointVO"/>
+		<typeAlias alias="clientcharmingPoint" type="com.ting.domain.ClientCharmingPointVO"/>
+		
+		<typeAlias alias="funvo" type="com.ting.domain.Fun_Mbtitest_0_VO"/>
+		<typeAlias alias="myfunvo" type="com.ting.domain.Fun_my_character_VO"/>
+		<typeAlias alias="yourfunvo" type="com.ting.domain.Fun_your_character_VO"/>
+		<typeAlias alias="mytest2" type="com.ting.domain.Fun_test2_myself_VO"/>
+		<typeAlias alias="idealtest2" type="com.ting.domain.Fun_test2_ideal_VO"/>
+		<typeAlias alias="cvo" type="com.ting.domain.ClientInfoVO"/>
+		<typeAlias type="com.ting.domain.LoginLogVO" alias="lvo"/>
+		<typeAlias type="com.ting.domain.TingBoardLogVO" alias="tlvo"/>
+		<typeAlias alias="chatvo" type="com.ting.domain.Chat_VO"/>
+	</typeAliases>
+	
+
+	
+	<!-- Mapper 등록: spring 설정파일에 지정하여 여기엔 필요없음 -->
+
+
+</configuration>
+

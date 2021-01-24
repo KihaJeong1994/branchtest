@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="replyMapper">
+<!-- 댓글 조회 -->
+<select id="list" parameterType="int" resultType="rvo">
+	        
+    select 
+	   cb.commentIdx, cb.boardIdx, cb.clientIdx, cb.content, cb.regDate, cb.regId, c.nickName
+	from commentBoard cb
+    inner join clientDetailInfo c on
+             cb.clientidx = c.clientidx    
+	where boardIdx = #{boardIdx}	
+	order by cb.regDate desc
+</select>
+
+<!-- 댓글 작성 -->
+<insert id="write" parameterType="rvo">
+	insert into commentBoard
+	    (COMMENTIDX,BOARDIDX,CLIENTIDX,CONTENT,REGDATE,REGID)
+		values(commentBoard_seq.nextval,#{boardIdx},#{clientIdx},#{content},sysdate,#{regId})
+</insert>
+	
+<!-- 댓글 수정 -->
+<update id="modify" parameterType="rvo">
+	update commentBoard set
+	    content = #{content}
+	where commentIdx = #{commentIdx}	   
+</update>
+
+<!-- 댓글 삭제 -->
+<delete id="delete" parameterType="rvo">
+	delete from commentBoard
+	where commentIdx = #{commentIdx}	    
+</delete>
+
+
+</mapper>

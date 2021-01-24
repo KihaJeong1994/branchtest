@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TingBoardDAO">
+
+	<!-- 팅투데이 게시글 작성 -->
+	<insert id="insertBoard" parameterType="board">
+		
+		INSERT INTO tingBoard(boardIdx, title, clientIdx, content, originalcontent, tag, fname, fsize, regdate)
+		VALUES(tingBoard_seq.nextval,#{title},#{clientIdx},#{content},#{originalContent},#{tag},#{fname, jdbcType=VARCHAR},#{fsize, jdbcType=VARCHAR},sysdate)	
+		
+	</insert> 
+	
+	<!-- 팅투데이 게시글 수정 -->
+   <update id="updateBoard" parameterType="board">
+      
+      UPDATE tingBoard  
+      <set>
+	      TITLE = #{title},
+	      CONTENT = #{content},
+	      ORIGINALCONTENT = #{originalContent},
+	      TAG = #{tag},
+         <if test="fname != null">
+               FNAME = #{fname},
+               FSIZE = #{fsize}
+         </if>
+      </set>
+      	WHERE boardIdx = #{boardIdx}         
+      
+   </update>   	
+	 
+	<!-- 팅투데이 게시글 삭제 -->
+	<delete id="deleteBoard" parameterType="board" >
+		
+		DELETE tingBoard
+		WHERE boardIdx = #{boardIdx}
+		
+	</delete>
+	
+	
+	<!-- 팅투데이 게시글 세부내용 출력 -->
+	<select id="getBoard" resultType="board" >
+		
+		SELECT 
+				b.boardIdx, b.title, 	b.clientIdx,	b.content,	b.regdate,	b.tag, b.originalContent, b.fname, b.fsize, 	c.nickName
+		FROM tingBoard b
+	    INNER JOIN clientDetailInfo c ON
+	            b.clientidx = c.clientidx
+		WHERE boardIdx = #{boardIdx}
+	</select>
+	
+	 	
+	<!-- 팅투데이 게시글 리스트 출력-->
+ 	<select id="getBoardList" resultType="board">
+		
+		SELECT boardIdx,title,clientIdx,regdate,fname,fsize
+		FROM tingBoard
+		ORDER BY boardIdx desc
+		
+	</select>  
+	
+	
+ 	<select id="list" resultType="board" parameterType="pvo">
+	   select boardIdx,title,clientIdx,originalcontent,regdate,fname,fsize from (
+	   select rownum r_num, a.* from 
+	   (select * from tingBoard 
+	   	<if test="searchType != null">
+			<where>
+				<choose>
+					<when test="searchType == 1">
+						clientIdx = #{searchValue}
+					</when>
+					<when test="searchType == 2">
+						content like '%'||#{searchValue}||'%'
+					</when>
+				</choose>
+			</where>
+		</if>		   
+	   order by boardIdx desc
+	   ) a
+	   ) where r_num between  #{start} and #{end}
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		select count(*) cnt from tingBoard
+		<if test="searchType != null">
+			<where>
+				<choose>
+					<when test="searchType == 1">
+						clientIdx = #{searchValue}
+					</when>
+					<when test="searchType == 2">
+						content like '%'||#{searchValue}||'%'
+					</when>
+				</choose>
+			</where>
+		</if>
+	</select>  
+	
+	<select id="likeCnt" parameterType="HashMap" resultType="com.ting.domain.TingBoardLikeVO">
+		select clientIdx,likeyfl, (select count(*) from boardlike where boardidx = #{boardIdx} and likeyfl = 1) as cnt
+		from boardLike
+		where boardidx = #{boardIdx} and likeyfl = 1
+		UNION
+		select clientIdx,likeyfl, (select count(*) from boardlike where boardidx = #{boardIdx} and likeyfl = 2) as cnt
+		from boardLike
+		where boardidx = #{boardIdx} and likeyfl = 2
+		UNION
+		select clientIdx,likeyfl, (select count(*) from boardlike where boardidx = #{boardIdx} and likeyfl = 3) as cnt
+		from boardLike
+		where boardidx = #{boardIdx} and likeyfl = 3
+	</select>
+	
+	<insert id="likeSave" parameterType="HashMap">
+		MERGE INTO 
+		     boardLike
+		USING DUAL 
+		    ON (boardIdx = #{boardIdx} and clientIdx = #{clientIdx})
+		WHEN MATCHED THEN
+		    UPDATE SET  
+		        likeyFl = #{likeyFl}
+		WHEN NOT MATCHED THEN
+		    INSERT
+				(likeyIdx,boardIdx,clientIdx,likeyFL)
+		    VALUES(boardLike_SEQ.nextval,#{boardIdx},#{clientIdx},#{likeyFl})
+	</insert>
+
+</mapper>  

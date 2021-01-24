@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ClientInterestDAO">
+
+	<!-- 회원 관심사 insert -->
+	<insert id="insertClientInterest" parameterType="clientInterest">
+		INSERT INTO clientInterest
+		VALUES(clientInterest_seq.nextVal,#{clientIdx},#{interestIdx})
+	</insert>
+	
+	<!-- 회원 관심사 delete -->
+	<delete id="deleteClientInterest" parameterType="clientInterest">
+		DELETE FROM clientInterest WHERE clientIdx=#{clientIdx}
+	</delete>
+	
+	
+	<!-- 회원이 선택한 관심사리스트 출력 -->
+	<select id="getClientInterestList" parameterType="clientInterest" resultType="clientInterest">
+		select interestIdx from clientInterest where clientIdx=#{clientIdx}
+	</select>
+	
+</mapper>

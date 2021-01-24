@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ting.dao.ClientInfoDAO" >
+	<!-- 로그인 -->
+	<resultMap type="clientInfo" id="clientInfoAndNickname">
+		<id property="clientIdx" column="clientIdx" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="phone" column="phone" />
+		<result property="regdate" column="regdate" />
+		<association property="clientDetailInfo" column="clientIdx"
+			javaType="clientDetailInfo">
+			<id property="clientIdx" column="clientIdx" />
+			<result property="nickname" column="nickname" />
+		</association>
+	</resultMap>
+	<select id="login" parameterType="clientInfo" resultMap="clientInfoAndNickname">
+		SELECT a.clientIdx,a.email,a.password,a.phone,a.regdate,c.nickname
+		FROM clientInfo a left OUTER JOIN clientDetailInfo  c  
+		ON (a.clientIdx = c.clientIdx)        
+		WHERE email = #{email} AND password = #{password}
+	</select> 
+	<!-- 로그인
+	<select id="login" parameterType="clientInfo" resultType="clientInfo">
+		SELECT clientIdx,email,password,phone,regdate
+		FROM clientInfo 
+		WHERE email = #{email} AND password = #{password}
+	</select> -->
+	
+	<!-- 비밀번호 변경시 이메일 확인 -->
+	<select id="selectOneByEmail"  parameterType="clientInfo">
+		SELECT clientIdx,email,password,phone,regdate
+		FROM clientInfo
+		WHERE email = #{email}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="register" parameterType="clientInfo">
+		INSERT INTO clientInfo 
+		VALUES(clientInfo_seq.nextVal,#{email},#{password},#{phone},SYSDATE)
+	</insert>
+	
+	<delete id="deleteClientInfo" parameterType="clientInfo">
+		DELETE FROM clientInfo
+		WHERE email = #{email} AND password = #{password}
+	</delete>
+</mapper>

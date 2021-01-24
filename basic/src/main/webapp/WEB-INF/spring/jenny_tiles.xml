@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+<tiles-definitions>
+	<definition name="ting_template" template="/WEB-INF/views/tiles/ting_template.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/tiles/ting_header.jsp" />
+		<put-attribute name="title" value="ting" />
+		<put-attribute name="menu" value="/WEB-INF/views/tiles/ting_menu1.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/ting_footer.jsp" />
+	</definition>
+	
+	<!-- 타일즈 미 적용 -->
+	<definition name="/*.jsp" template="/WEB-INF/views/tiles/no_Template.jsp">
+		<put-attribute name="noTemplate" value="/WEB-INF/views/{1}.jsp" />
+	</definition>
+	
+	<definition name="/*" extends="ting_template">
+		<put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+	</definition>
+	
+	<definition name="/no/*" template="/WEB-INF/views/tiles/no_Template.jsp">
+		<put-attribute name="noTemplate" value="/{1}" />
+	</definition>
+	
+	
+	
+</tiles-definitions>
+
+
+  

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IdealRecommendationDAO">
+
+
+
+<resultMap type="idealRecommendation" id="idealRecommendationAndDetail">
+		<id property="recommendationIdx" column="recommendationIdx" />
+		<result property="clientIdx" column="clientIdx" />
+		<result property="recommendedPeopleIdx" column="recommendedPeopleIdx" />
+		<result property="recommendationDate" column="recommendationDate" />
+		<result property="sendOrNot" column="sendOrNot" />
+		<result property="sendTime" column="sendTime" />
+		<!--property="sphone" getSphone() column="sabun" => s.sabun sabun javaType="sphonevo" 
+			: 참조하는 실제 VO -->
+		<association property="clientDetailInfo" column="clientIdx" javaType="clientDetailInfo">
+			<id property="clientIdx" column="clientIdx" />
+			<result property="name" column="name" />
+			<result property="nickname" column="nickname" />
+			<result property="gender" column="gender" />
+			<result property="job" column="job" />
+			<result property="age" column="age" />
+			<result property="photo" column="photo" />
+			<result property="religion" column="religion" />
+			<result property="education" column="education" />
+			<result property="height" column="height" />
+			<result property="bodyShape" column="bodyShape" />
+			<result property="drink" column="drink" />
+			<result property="smoke" column="smoke" />
+			<result property="selfIntro" column="selfIntro" />
+			<result property="totalHeart" column="totalHeart" />
+		</association>
+		<association property="likeReceive" column="clientIdx" javaType="likeReceive">
+			<id property="likeIdx" column="likeIdx" />
+			<result property="clientIdx" column="clientIdx" />
+			<result property="sendIdx" column="sendIdx" />
+			<result property="receiveTime" column="receiveTime" />
+			<result property="successOrNot" column="successOrNot" />
+		</association>
+	</resultMap>
+	
+	
+	<!--회원 추천 리스트 출력 -->
+	<select id="getIdealRecommendationList"  parameterType="clientDetailInfo" resultMap="idealRecommendationAndDetail">
+		select c.nickname,c.age,c.selfIntro,c.clientIdx from idealRecommendation i, clientDetailinfo c where i.clientIdx = #{clientIdx}
+		and i.recommendedpeopleidx=c.clientidx 
+		and to_date(to_char(sysdate,'yyyymmdd'),'yyyymmdd')=to_date(to_char(i.recommendationdate,'yyyymmdd'),'yyyymmdd')
+	</select>
+
+	
+	<!-- 좋아요 보냈으면 추천DB 상태변경 -->
+	<update id="updateIdealRecommendation" parameterType="idealRecommendation">
+		UPDATE idealRecommendation i set sendOrNot = 1 , sendTime = sysdate
+		where i.clientIdx=#{clientIdx} 
+		and i.recommendedPeopleIdx = #{recommendedPeopleIdx}
+	</update>
+	
+	<!-- 보낸 좋아요 리스트 -->
+	<select id="getLikeSendList" parameterType="idealRecommendation" resultMap="idealRecommendationAndDetail">
+	select i.clientidx,i.sendtime,c.nickname,c.clientidx,l.successornot 
+    from idealRecommendation i, clientDetailinfo c ,likeReceive l
+    where i.clientidx=#{clientIdx} and i.sendornot=1 and i.recommendedpeopleidx=c.clientidx
+    and c.clientidx=l.clientidx and i.clientidx=l.sendidx
+	</select>
+	
+	
+	
+</mapper>

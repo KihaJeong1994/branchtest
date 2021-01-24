@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LikeReceiveDAO">
+
+	<!-- 내가 좋아요 보냈을때 받은 좋아요에 정보 입력 -->
+	<insert id="insertLikeReceive" parameterType="likeReceive">
+		INSERT INTO likeReceive
+		VALUES(likeIdx_seq.nextval,#{clientIdx},#{sendIdx},SYSDATE,0)
+	</insert>
+	
+	<resultMap type="likeReceive" id="clientDetailInfoAndSuccess">
+		<id property="likeIdx" column="likeIdx" />
+		<result property="clientIdx" column="clientIdx" />
+		<result property="sendIdx" column="sendIdx" />
+		<result property="receiveTime" column="receiveTime" />
+		<result property="successOrNot" column="successOrNot" />
+		<association property="clientDetailInfo" column="clientIdx"
+			javaType="clientDetailInfo">
+			<id property="clientIdx" column="clientIdx" />
+			<result property="nickname" column="nickname" />
+			<result property="gender" column="gender" />
+		</association>
+	</resultMap>
+	
+	<!-- 받은 좋아요 목록 -->
+	<select id="getLikeReceiveList" parameterType="likeReceive" resultMap="clientDetailInfoAndSuccess">
+	SELECT c.clientIdx, c.nickname,c.gender,l.successOrNot
+	FROM clientDetailInfo c, likeReceive l
+	WHERE l.clientIdx=#{clientIdx} and l.sendIdx = c.clientIdx
+	</select> 
+	
+	<!-- 매칭 성사되었으면 successOrNot업데이트 -->
+	<update id="updateLikeReceive" parameterType="likeReceive">
+		UPDATE likeReceive a set successOrNot = (
+		select count(*) from coupleDecision b 
+		where a.clientIdx=b.clientIdx 
+		   and a.sendIdx = b.otherIdx)
+	</update>
+	
+</mapper>

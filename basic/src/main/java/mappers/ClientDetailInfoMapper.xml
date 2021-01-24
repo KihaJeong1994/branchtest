@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ClientDetailInfoDAO">
+
+	<!-- 회원 상세정보 insert -->
+	<insert id="insertClientDetailInfo" parameterType="clientDetailInfo">
+		INSERT INTO clientDetailInfo (clientIdx, name, nickname,gender,
+		job,age,latitude,longitude,religion,education,height,bodyShape,
+		drink,smoke,selfIntro,lastUpdate,totalheart)
+		VALUES(#{clientIdx},
+			#{name},#{nickname},#{gender},#{job},
+			#{age},#{latitude},#{longitude},#{religion}
+			,#{education},#{height}
+			,#{bodyShape},#{drink},#{smoke},#{selfIntro},sysdate,1)
+	</insert>
+	
+	<!-- 회원 사진 upload -->
+	<update id="updatePhotoClientDetailInfo" parameterType="clientDetailInfo">
+		UPDATE clientDetailInfo SET
+		
+		photo = #{photo}
+		WHERE clientIdx = #{clientIdx}
+	</update>
+	
+	
+	<resultMap type="clientDetailInfo" id="clientDetailInfoAndMBTI">
+		<id property="clientIdx" column="clientIdx" />
+		<result property="name" column="name" />
+		<result property="nickname" column="nickname" />
+		<result property="gender" column="gender" />
+		<result property="job" column="job" />
+		<result property="age" column="age" />
+		<result property="photo" column="photo" />
+		<result property="religion" column="religion" />
+		<result property="education" column="education" />
+		<result property="height" column="height" />
+		<result property="bodyShape" column="bodyShape" />
+		<result property="drink" column="drink" />
+		<result property="smoke" column="smoke" />
+		<result property="selfIntro" column="selfIntro" />
+		<result property="totalHeart" column="totalHeart" />
+		<!--property="sphone" getSphone() column="sabun" => s.sabun sabun javaType="sphonevo" 
+			: 참조하는 실제 VO -->
+		<association property="funvo" column="clientIdx"
+			javaType="funvo">
+			<id property="clientIdx" column="clientIdx" />
+			<result property="Fun_mbti_result" column="Fun_mbti_result" />
+		</association>
+	</resultMap>
+	<!-- 회원 상세정보 가져오기 -->
+	<select id="getClientDetailInfo" parameterType="clientDetailInfo" resultMap="clientDetailInfoAndMBTI">
+		select c.clientIdx, c.name, c.nickname, c.gender,c.job,c.age,c.photo,c.religion
+		,c.education,c.height,c.bodyShape,c.drink,c.smoke,c.selfintro
+		,c.totalHeart,f.Fun_mbti_result
+		from clientDetailInfo c       
+        left OUTER JOIN fun_mbti  f               
+        ON (c.clientIdx = f.clientIdx)
+		where c.clientIdx=#{clientIdx}
+
+	</select>
+
+	<!-- 회원 상세정보 수정 -->
+	<update id="updateClientDetailInfo" parameterType="clientDetailInfo">
+		UPDATE clientDetailInfo SET
+		nickname = #{nickname},
+		job = #{job},
+		religion = #{religion},
+		education = #{education},
+		height = #{height},
+		bodyShape = #{bodyShape},
+		drink = #{drink},
+		smoke = #{smoke},
+		selfIntro = #{selfIntro},
+		lastUpdate = sysdate
+		WHERE clientIdx = #{clientIdx}
+	</update>
+	
+	<!--회원 추천 리스트 출력 -->
+	<select id="getClientDetailInfoList"  parameterType="clientDetailInfo" resultType="clientDetailInfo">
+		SELECT clientIdx, name, nickname,gender,
+		job,age,latitude,longitude,religion,education,height,bodyShape,
+		drink,smoke,selfIntro,lastUpdate
+		FROM ClientDetailInfo where gender not like #{gender}
+	</select>
+	
+	<!-- 하트 갯수 -->
+	<select id="getTotalHeart" parameterType="clientDetailInfo" resultType="int">
+		SELECT totalHeart
+		FROM clientDetailInfo
+		WHERE clientIdx = #{clientIdx}
+	</select>
+	
+	<!-- 좋아요 클릭 시 하트 감소 -->
+	<update id="reduceTotalHeart" parameterType="clientDetailInfo">
+		UPDATE clientDetailInfo SET
+		totalHeart = totalHeart-1
+		WHERE clientIdx = #{clientIdx}
+	</update>
+	
+	<!-- 매일 아침 9시 하트 증가 -->
+	<update id="increaseTotalHeartPerDay" >
+		UPDATE clientDetailInfo SET
+		totalHeart = totalHeart+1
+	</update>
+	
+	
+</mapper>

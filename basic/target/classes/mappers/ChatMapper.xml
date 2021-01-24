@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Chat_DAO">
+
+<select id="selectone_couple" parameterType="coupleDecision" resultType="HashMap">
+	   select clientIdx,otherIdx from coupleDecision where coupleIdx=#{coupleIdx}
+</select>
+
+<insert id="first_insert_chat" parameterType="chatvo">
+	INSERT INTO chatting VALUES(chat_idx_seq.nextVal,#{to_id},#{from_id},#{content},0,sysdate)
+</insert>
+
+<insert id="insert_chat" parameterType="chatvo">
+	INSERT INTO chatting VALUES(chat_idx_seq.nextVal,#{to_id},#{from_id},#{content},0,sysdate)
+</insert>
+
+<select id="selectlist_chatdata" parameterType="chatvo" resultType="chatvo">
+	select * from chatting where (to_id =#{to_id} and from_id=#{from_id}) or(to_id =#{from_id} and from_id=#{to_id}) order by chat_idx
+</select>
+
+<select id="selectlist_chatlist" parameterType="chatvo" resultType="chatvo">
+	select distinct from_id from chatting where to_id = #{to_id}
+</select>
+
+
+
+
+
+</mapper>

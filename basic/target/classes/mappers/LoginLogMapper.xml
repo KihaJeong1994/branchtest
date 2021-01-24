@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loginLog">
+
+
+	<insert id="logger_in" parameterType="lvo">
+		insert into loginlog
+		values(loginlog_seq.nextVal,#{idxn},#{reip},#{uagent},#{status},sysdate)
+	</insert>
+
+
+</mapper>  

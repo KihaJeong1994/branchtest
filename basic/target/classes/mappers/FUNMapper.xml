@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Fun_Mbtitest_0_DAO">
+
+<insert id="insert_Fun_Mbtitest_0" parameterType="funvo">
+	INSERT INTO Fun_mbti VALUES(#{clientIdx},Fun_mbti_seq.nextVal,#{Fun_mbti_result},#{mbti_q1},#{mbti_q2},#{mbti_q3},#{mbti_q4},#{mbti_q5},#{mbti_q6},#{mbti_q7},#{mbti_q8},#{mbti_q9},#{mbti_q10},#{mbti_q11},#{mbti_q12},#{mbti_q13},#{mbti_q14},#{mbti_q15},#{mbti_q16},#{mbti_q17},#{mbti_q18},#{mbti_q19},#{mbti_q20},sysdate)
+</insert>
+
+<insert id="insert_Fun_my_character" parameterType="myfunvo">
+	INSERT INTO Fun_my_character VALUES(#{clientIdx},Fun_my_character_seq.nextVal,#{romantist},#{homebody},#{planned},#{impromptu},#{outgoing},#{active},#{passive},#{leading},#{sensitive},#{rational},#{consider},#{detailed},#{sympathy},#{personal},#{contact_high},#{contact_low},#{sense},#{reaction},#{fashion},sysdate)
+</insert>
+
+<insert id="insert_Fun_your_character" parameterType="yourfunvo">
+	INSERT INTO Fun_your_character VALUES(#{clientIdx},Fun_your_character_seq.nextVal,#{your_gender},#{your_fashion},#{outgoing},#{leading},#{personal},#{homebody},#{consider},#{sympathy},#{reaction},sysdate)
+</insert>
+
+<insert id="insert_Fun_test2_myself" parameterType="mytest2">
+	INSERT INTO Fun_test2_myself VALUES(#{clientIdx},Fun_test2_myself_seq.nextVal,#{Fun_test2_myself_result},#{q1},#{q2},#{q3},#{q4},#{q5},#{q6},#{q7},sysdate)
+</insert>
+
+<insert id="insert_Fun_test2_ideal" parameterType="idealtest2">
+	INSERT INTO Fun_test2_ideal VALUES(#{clientIdx},Fun_test2_ideal_seq.nextVal,#{Fun_test2_ideal_result},#{q1},#{q2},#{q3},#{q4},#{q5},#{q6},#{q7},sysdate)
+</insert>
+
+
+
+
+</mapper>
