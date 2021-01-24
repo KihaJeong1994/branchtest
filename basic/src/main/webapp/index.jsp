@@ -31,7 +31,7 @@
 			    <nav class="navbar navbar-default">
 		        <div class="navbar-header">
 				<a href="index.jsp" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
-		         <a class="navbar-brand" href="index.jsp">ting kiha</a> 
+		         <a class="navbar-brand" href="index.jsp">ting commit2</a> 
 		        </div>
 		        <div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
