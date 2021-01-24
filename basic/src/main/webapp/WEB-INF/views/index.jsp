@@ -60,7 +60,7 @@
             <div class="text-inner">
             <div class="row">
 						<div class="col-md-8 col-md-offset-2" >
-							<h1 class="to-animate"  >매일 이상형이 찾아오다</h1>
+							<h1 class="to-animate"  >매일 이상형이 찾아오다 여기 수정했어용</h1>
 							<h2 class="to-animate">ting</h2><br>
 						</div>
 					</div>
